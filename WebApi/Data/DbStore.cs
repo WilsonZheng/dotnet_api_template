@@ -1,7 +1,8 @@
-public class DbStore
+public class DbStore : IDbStore
 {
     public Dictionary<string, Product> Products()
     {
+        // Simulate loading products data from DB
         return new Dictionary<string, Product>
         {
             {"A", new Product { Sku = "A", PriceInCents = 50, SpecialQuantity = 3, SpecialPrice = 130 }},

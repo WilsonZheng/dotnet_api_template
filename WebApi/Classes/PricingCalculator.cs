@@ -4,7 +4,7 @@ public class PricingCalculator : IPricingCalculator
 
     public PricingCalculator(Dictionary<string, Product> products)
     {
-        _products = products;
+        _products = products ?? throw new ArgumentNullException(nameof(products));
     }
 
     public int CalculateTotal(ICart cart)
@@ -13,12 +13,12 @@ public class PricingCalculator : IPricingCalculator
         var items = cart.GetItems();
         foreach (var item in items)
         {
-            total += CalculateItemTotal(item);
+            total += GetItemTypeTotal(item);
         }
         return total;
     }
 
-    private int CalculateItemTotal(KeyValuePair<string, int> item)
+    private int GetItemTypeTotal(KeyValuePair<string, int> item)
     {
         var product = _products[item.Key];
         if (product.SpecialQuantity > 0)
@@ -31,11 +31,5 @@ public class PricingCalculator : IPricingCalculator
         {
             return item.Value * product.PriceInCents;
         }
-    }
-
-    // Helper method to convert cents to dollars
-    public decimal ConvertCentsToDollars(int cents)
-    {
-        return cents / 100m;
     }
 }

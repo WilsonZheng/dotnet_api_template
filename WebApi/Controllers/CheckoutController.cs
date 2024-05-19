@@ -8,21 +8,24 @@ namespace MyApiProject.Controllers
     {
 
         [HttpGet]
-        public ActionResult<ApiResponse<string>> Get([FromQuery] string items)
+        public ActionResult<CheckoutApiResponse> Get([FromQuery] string items)
         {
-            DbStore dbStore = new DbStore();
-            Cart cart = new Cart();
-            PricingCalculator pricingCalculator = new PricingCalculator(dbStore.Products());
-            Checkout checkout = new Checkout(cart, pricingCalculator);
-            foreach (var item in items)
+            try
             {
-                cart.Add(item.ToString());
+                var result = new CheckoutService(new Cart(), new PricingCalculator(new DbStore().Products())).Checkout(items);
+                var response = new CheckoutApiResponse
+                {
+                    Total = result
+                };
+                return Ok(response);
             }
-            var response = new ApiResponse<string>
+            catch (Exception ex)
             {
-                Total = pricingCalculator.ConvertCentsToDollars(checkout.GetTotal())
-            };
-            return Ok(response);
+                Console.WriteLine($"Error: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
+
+
     }
 }

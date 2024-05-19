@@ -9,6 +9,7 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        // Security TODO: Only allow recognised clients
         services.AddCors(options =>
         {
             options.AddPolicy("AllowAllOrigins",
