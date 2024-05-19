@@ -12,10 +12,15 @@ namespace MyApiProject.Controllers
         {
             try
             {
-                var result = new CheckoutService(new Cart(), new PricingCalculator(new DbStore().Products())).Checkout(items);
+                var checkout = new Checkout(
+                    new Cart(),
+                    new PricingCalculator(
+                        new DbStore().Products()
+                    )
+                );
                 var response = new CheckoutApiResponse
                 {
-                    Total = result
+                    Total = checkout.GetTotal(items)
                 };
                 return Ok(response);
             }

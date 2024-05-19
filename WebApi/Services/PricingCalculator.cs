@@ -13,19 +13,19 @@ public class PricingCalculator : IPricingCalculator
         var items = cart.GetItems();
         foreach (var item in items)
         {
-            total += GetItemTypeTotal(item);
+            total += GetProductTotal(item);
         }
         return total;
     }
 
-    private int GetItemTypeTotal(KeyValuePair<string, int> item)
+    private int GetProductTotal(KeyValuePair<string, int> item)
     {
         var product = _products[item.Key];
         if (product.SpecialQuantity > 0)
         {
             int sets = item.Value / product.SpecialQuantity;
             int remainder = item.Value % product.SpecialQuantity;
-            return sets * product.SpecialPrice + remainder * product.PriceInCents;
+            return sets * product.SpecialPriceInCents + remainder * product.PriceInCents;
         }
         else
         {

@@ -29,17 +29,17 @@ public class CheckoutServiceTests
         // set up mocks
         mockDbStore.Setup(m => m.Products()).Returns(new Dictionary<string, Product>
         {
-            {"A", new Product { Sku = "A", PriceInCents = 50, SpecialQuantity = 3, SpecialPrice = 130 }},
-            {"B", new Product { Sku = "B", PriceInCents = 30, SpecialQuantity = 2, SpecialPrice = 45 }},
-            {"C", new Product { Sku = "C", PriceInCents = 20, SpecialQuantity = 0, SpecialPrice = 0 }},
-            {"D", new Product { Sku = "D", PriceInCents = 15, SpecialQuantity = 0, SpecialPrice = 0 }},
+            {"A", new Product { Sku = "A", PriceInCents = 50, SpecialQuantity = 3, SpecialPriceInCents = 130 }},
+            {"B", new Product { Sku = "B", PriceInCents = 30, SpecialQuantity = 2, SpecialPriceInCents = 45 }},
+            {"C", new Product { Sku = "C", PriceInCents = 20, SpecialQuantity = 0, SpecialPriceInCents = 0 }},
+            {"D", new Product { Sku = "D", PriceInCents = 15, SpecialQuantity = 0, SpecialPriceInCents = 0 }},
         });
         mockPricingCalculator.Setup(m => m.CalculateTotal(It.IsAny<ICart>())).Returns(totalInCents);
 
-        var checkoutService = new CheckoutService(mockCart.Object, mockPricingCalculator.Object);
+        var checkoutService = new Checkout(mockCart.Object, mockPricingCalculator.Object);
 
         // act
-        decimal result = checkoutService.Checkout(items);
+        decimal result = checkoutService.GetTotal(items);
 
         // assert
         result.Should().Be(expected);

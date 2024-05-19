@@ -1,15 +1,15 @@
-public class CheckoutService : ICheckoutService
+public class Checkout : ICheckout
 {
     private readonly ICart _cart;
     private readonly IPricingCalculator _pricingCalculator;
 
-    public CheckoutService(ICart cart, IPricingCalculator pricingCalculator)
+    public Checkout(ICart cart, IPricingCalculator pricingCalculator)
     {
         _cart = cart ?? throw new ArgumentNullException(nameof(cart));
         _pricingCalculator = pricingCalculator ?? throw new ArgumentNullException(nameof(pricingCalculator));
     }
 
-    public decimal Checkout(string items)
+    public decimal GetTotal(string items)
     {
         foreach (var item in items)
         {
